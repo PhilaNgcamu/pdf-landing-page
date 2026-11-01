@@ -1,4 +1,4 @@
-// PDF Pro — Landing Page Scripts
+// Tree Grows Ltd — Landing Page Scripts
 
 (function () {
   'use strict';
@@ -44,10 +44,20 @@
     }
   });
 
+  // Quote form submission
+  var quoteForm = document.getElementById('quoteForm');
+  if (quoteForm) {
+    quoteForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('Thank you! Your quote request has been submitted. We will get back to you within 24 hours.');
+      quoteForm.reset();
+    });
+  }
+
   // Scroll-reveal animation
   if ('IntersectionObserver' in window) {
-    const reveals = document.querySelectorAll(
-      '.feature-card, .step, .testimonial-card, .pricing-card, .section-header'
+    var reveals = document.querySelectorAll(
+      '.feature-card, .step, .testimonial-card, .why-card, .section-header, .quote-form'
     );
 
     reveals.forEach(function (el) {
@@ -56,7 +66,7 @@
       el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     });
 
-    const observer = new IntersectionObserver(function (entries) {
+    var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.style.opacity = '1';

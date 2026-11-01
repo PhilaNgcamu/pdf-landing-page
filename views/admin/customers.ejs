@@ -1,0 +1,43 @@
+<%- include('layout-head') %>
+
+<div class="table-wrap">
+  <div class="table-header">
+    <h2>All Customers (<%= customers.length %>)</h2>
+    <form class="filters" method="GET" action="/admin/customers">
+      <input type="text" name="search" placeholder="Search name, email, phone, company…" value="<%= search %>" style="min-width:250px"/>
+      <button type="submit" class="btn btn-sm btn-primary">Search</button>
+      <a href="/admin/customers" class="btn btn-sm">Clear</a>
+    </form>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Company</th>
+        <th>Quotes</th>
+        <th>Last Quote</th>
+        <th>Joined</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (customers.length === 0) { %>
+        <tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:2rem">No customers found.</td></tr>
+      <% } %>
+      <% customers.forEach(c => { %>
+      <tr style="cursor:pointer" onclick="location.href='/admin/customers/<%= c.id %>'">
+        <td><strong><%= c.name %></strong></td>
+        <td><a href="mailto:<%= c.email %>" style="color:#16a34a" onclick="event.stopPropagation()"><%= c.email %></a></td>
+        <td><%= c.phone || '—' %></td>
+        <td><%= c.company || '—' %></td>
+        <td><%= c.quote_count %></td>
+        <td><%= c.last_quote_date ? new Date(c.last_quote_date).toLocaleDateString('en-ZA') : '—' %></td>
+        <td style="white-space:nowrap"><%= new Date(c.created_at).toLocaleDateString('en-ZA') %></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('layout-foot') %>

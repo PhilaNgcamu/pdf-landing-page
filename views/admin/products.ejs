@@ -1,0 +1,42 @@
+<%- include('layout-head') %>
+
+<div class="table-wrap">
+  <div class="table-header">
+    <h2>Products (<%= products.length %>)</h2>
+    <% if (user.role === 'admin' || user.role === 'manager') { %>
+    <a href="/admin/products/new" class="btn btn-sm btn-primary">+ Add Product</a>
+    <% } %>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Min Qty</th>
+        <th>From Price</th>
+        <th>Featured</th>
+        <th>Active</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% products.forEach(p => { %>
+      <tr>
+        <td><strong><%= p.name %></strong><br><span style="font-size:.8rem;color:#64748b"><%= p.short_description %></span></td>
+        <td><%= p.category_name %></td>
+        <td><%= p.min_quantity %></td>
+        <td>R<%= p.price_from ? p.price_from.toFixed(2) : '0.00' %></td>
+        <td><%= p.featured ? '⭐' : '—' %></td>
+        <td><span class="badge <%= p.active ? 'badge-completed' : 'badge-cancelled' %>"><%= p.active ? 'Active' : 'Inactive' %></span></td>
+        <td>
+          <% if (user.role === 'admin' || user.role === 'manager') { %>
+          <a href="/admin/products/<%= p.id %>/edit" class="btn btn-sm">Edit</a>
+          <% } %>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('layout-foot') %>

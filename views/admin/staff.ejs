@@ -1,0 +1,83 @@
+<%- include('layout-head') %>
+
+<!-- Add Staff Form -->
+<div class="panel" style="max-width:720px;margin-bottom:2rem">
+  <div class="panel-header">Add New Staff Member</div>
+  <div class="panel-body">
+    <form method="POST" action="/admin/staff">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Username *</label>
+          <input type="text" name="username" required placeholder="e.g. sipho"/>
+        </div>
+        <div class="form-group">
+          <label>Password *</label>
+          <input type="password" name="password" required minlength="6" placeholder="Min 6 characters"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" name="name" required placeholder="e.g. Sipho Ndlovu"/>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="e.g. sipho@treegrows.co.za"/>
+        </div>
+      </div>
+      <div class="form-group" style="max-width:250px">
+        <label>Role</label>
+        <select name="role">
+          <option value="staff">Staff</option>
+          <option value="manager">Manager</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Staff Member</button>
+    </form>
+  </div>
+</div>
+
+<!-- Staff List -->
+<div class="table-wrap">
+  <div class="table-header"><h2>All Staff (<%= staff.length %>)</h2></div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Last Login</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% staff.forEach(s => { %>
+      <tr>
+        <td><strong><%= s.name %></strong></td>
+        <td><%= s.username %></td>
+        <td><%= s.email || '—' %></td>
+        <td><span class="badge badge-<%= s.role %>"><%= s.role %></span></td>
+        <td><span class="badge <%= s.active ? 'badge-completed' : 'badge-cancelled' %>"><%= s.active ? 'Active' : 'Disabled' %></span></td>
+        <td><%= s.last_login ? new Date(s.last_login).toLocaleString('en-ZA') : 'Never' %></td>
+        <td style="white-space:nowrap">
+          <form method="POST" action="/admin/staff/<%= s.id %>/toggle" style="display:inline">
+            <button type="submit" class="btn btn-sm"><%= s.active ? 'Disable' : 'Enable' %></button>
+          </form>
+          <button onclick="document.getElementById('pw-<%= s.id %>').style.display='flex'" class="btn btn-sm">Reset PW</button>
+          <div id="pw-<%= s.id %>" style="display:none;gap:.5rem;margin-top:.5rem">
+            <form method="POST" action="/admin/staff/<%= s.id %>/password" style="display:flex;gap:.5rem">
+              <input type="password" name="password" minlength="6" placeholder="New password" required style="padding:.3rem .5rem;font-size:.85rem;border:1px solid #d1d5db;border-radius:.375rem;width:140px"/>
+              <button type="submit" class="btn btn-sm btn-primary">Save</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('layout-foot') %>

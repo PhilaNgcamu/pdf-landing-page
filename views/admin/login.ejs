@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login — Tree Grows</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',system-ui,sans-serif;background:linear-gradient(135deg,#0f2a1b,#14532d);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+    .card{background:#fff;border-radius:1rem;padding:2.5rem;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+    .brand{text-align:center;margin-bottom:2rem}
+    .brand h1{font-size:1.5rem;font-weight:800;color:#111827}
+    .brand h1 span{color:#16a34a}
+    .brand p{color:#64748b;font-size:.9rem;margin-top:.25rem}
+    .error{background:#fee2e2;color:#991b1b;padding:.65rem 1rem;border-radius:.5rem;font-size:.85rem;margin-bottom:1rem;text-align:center}
+    label{display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.35rem}
+    input{width:100%;padding:.7rem .85rem;border:1px solid #d1d5db;border-radius:.5rem;font-size:.95rem;font-family:inherit;margin-bottom:1rem}
+    input:focus{outline:none;border-color:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+    button{width:100%;padding:.8rem;background:#16a34a;color:#fff;border:none;border-radius:.5rem;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s}
+    button:hover{background:#15803d}
+    .back{display:block;text-align:center;margin-top:1.5rem;color:#64748b;font-size:.85rem}
+    .back:hover{color:#16a34a}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">
+      <h1>🌳 Tree <span>Grows</span></h1>
+      <p>Staff Administration</p>
+    </div>
+    <% if (error) { %><div class="error"><%= error %></div><% } %>
+    <form method="POST" action="/admin/login">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required autofocus/>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required/>
+      <button type="submit">Sign In</button>
+    </form>
+    <a href="/" class="back">← Back to website</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<%- include('layout-head') %>
+
+<!-- Stats -->
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="label">New Quotes</div>
+    <div class="value green"><%= stats.newQuotes %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Active Quotes</div>
+    <div class="value"><%= stats.activeQuotes %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Total Quotes</div>
+    <div class="value"><%= stats.totalQuotes %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Today</div>
+    <div class="value"><%= stats.quotesToday %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Customers</div>
+    <div class="value"><%= stats.totalCustomers %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Products</div>
+    <div class="value"><%= stats.totalProducts %></div>
+  </div>
+</div>
+
+<!-- Recent Quotes -->
+<div class="table-wrap">
+  <div class="table-header">
+    <h2>Recent Quote Requests</h2>
+    <a href="/admin/quotes" class="btn btn-sm">View All →</a>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Reference</th>
+        <th>Customer</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Assigned</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (recentQuotes.length === 0) { %>
+        <tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:2rem">No quotes yet. They'll appear here when customers submit requests.</td></tr>
+      <% } %>
+      <% recentQuotes.forEach(q => { %>
+      <tr style="cursor:pointer" onclick="location.href='/admin/quotes/<%= q.id %>'">
+        <td><strong><%= q.reference %></strong></td>
+        <td><%= q.customer_name %></td>
+        <td><span class="badge badge-<%= q.status %>"><%= q.status.replace(/_/g,' ') %></span></td>
+        <td><span class="badge badge-<%= q.priority %>"><%= q.priority %></span></td>
+        <td><%= q.assigned_name || '—' %></td>
+        <td style="white-space:nowrap"><%= new Date(q.created_at).toLocaleDateString('en-ZA') %></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<!-- Recent Activity -->
+<div class="table-wrap">
+  <div class="table-header"><h2>Recent Activity</h2></div>
+  <div style="padding:1.25rem 1.5rem">
+    <% if (recentActivity.length === 0) { %>
+      <p style="color:#94a3b8;text-align:center">No activity yet.</p>
+    <% } %>
+    <ul class="timeline">
+      <% recentActivity.forEach(a => { %>
+      <li class="type-<%= a.action_type %>">
+        <div class="time"><%= new Date(a.created_at).toLocaleString('en-ZA') %> · <a href="/admin/quotes/<%= a.quote_id %>" class="btn-link" style="font-size:.75rem"><%= a.reference %></a></div>
+        <% if (a.user_name) { %><div class="actor"><%= a.user_name %></div><% } %>
+        <div class="desc"><%= a.description %></div>
+      </li>
+      <% }) %>
+    </ul>
+  </div>
+</div>
+
+<%- include('layout-foot') %>

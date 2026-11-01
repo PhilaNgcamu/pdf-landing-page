@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product — Tree Grows Ltd</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="css/pages.css"/>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="/" class="logo">
+        <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#16A34A"/><path d="M20 6 L28 16 H24 L30 24 H10 L16 16 H12 Z" fill="#fff" opacity=".95"/><rect x="18" y="24" width="4" height="6" rx="1" fill="#fff" opacity=".8"/></svg>
+        <span class="logo-text">Tree <span class="accent">Grows</span></span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/catalogue.html">Products</a></li>
+        <li><a href="/basket.html" id="basketLink">Quote Basket (<span id="basketCount">0</span>)</a></li>
+        <li><a href="/#contact" class="btn btn-nav">Get a Quote</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="product-detail-section">
+    <div class="container">
+      <div class="breadcrumb" id="breadcrumb">
+        <a href="/catalogue.html">Products</a> <span>›</span> <span id="breadcrumbProduct">Loading…</span>
+      </div>
+
+      <div class="product-detail" id="productDetail">
+        <div class="loading">Loading product…</div>
+      </div>
+
+      <!-- Related Products -->
+      <div id="relatedSection" style="display:none">
+        <h2 style="font-size:1.3rem;font-weight:700;margin:3rem 0 1.5rem">You may also like</h2>
+        <div class="products-grid" id="relatedGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Tree Grows Ltd. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="js/basket.js"></script>
+  <script src="js/product.js"></script>
+</body>
+</html>

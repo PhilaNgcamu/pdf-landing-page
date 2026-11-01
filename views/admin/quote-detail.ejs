@@ -1,0 +1,196 @@
+<%- include('layout-head') %>
+
+<div style="margin-bottom:1rem"><a href="/admin/quotes" class="btn btn-sm">← Back to Quotes</a></div>
+
+<div class="detail-grid">
+  <!-- LEFT: Quote info + items + activity -->
+  <div>
+    <!-- Quote Items -->
+    <div class="panel">
+      <div class="panel-header">Requested Items</div>
+      <table>
+        <thead>
+          <tr><th>Product</th><th>Qty</th><th>Colour</th><th>Size</th><th>Branding</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <% items.forEach(item => { %>
+          <tr>
+            <td><strong><%= item.product_name %></strong></td>
+            <td><%= item.quantity %></td>
+            <td><%= item.colour || '—' %></td>
+            <td><%= item.size || '—' %></td>
+            <td><%= item.branding_method || '—' %></td>
+            <td style="font-size:.85rem"><%= item.notes || '—' %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Customer Notes -->
+    <% if (quote.customer_notes) { %>
+    <div class="panel">
+      <div class="panel-header">Customer Notes</div>
+      <div class="panel-body"><p style="white-space:pre-wrap"><%= quote.customer_notes %></p></div>
+    </div>
+    <% } %>
+
+    <!-- Add Internal Note -->
+    <div class="panel">
+      <div class="panel-header">Add Internal Note</div>
+      <div class="panel-body">
+        <form method="POST" action="/admin/quotes/<%= quote.id %>/notes">
+          <div class="form-group">
+            <textarea name="note" rows="3" placeholder="Write an internal note…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm">Add Note</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Send Email to Customer -->
+    <div class="panel">
+      <div class="panel-header">📧 Email Customer</div>
+      <div class="panel-body">
+        <form method="POST" action="/admin/quotes/<%= quote.id %>/email">
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" name="subject" value="Tree Grows — Quote <%= quote.reference %>" required/>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea name="body" rows="4" placeholder="Write your message to the customer…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm">Send Email</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Activity History -->
+    <div class="panel">
+      <div class="panel-header">Activity History</div>
+      <div class="panel-body">
+        <% if (activity.length === 0) { %>
+          <p style="color:#94a3b8">No activity recorded yet.</p>
+        <% } %>
+        <ul class="timeline">
+          <% activity.forEach(a => { %>
+          <li class="type-<%= a.action_type %>">
+            <div class="time"><%= new Date(a.created_at).toLocaleString('en-ZA') %></div>
+            <% if (a.user_name) { %><div class="actor"><%= a.user_name %></div><% } %>
+            <div class="desc"><%= a.description %></div>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Sidebar actions -->
+  <div>
+    <!-- Quote Info -->
+    <div class="panel">
+      <div class="panel-header">Quote Information</div>
+      <div class="panel-body">
+        <div class="info-row"><span class="info-label">Reference</span><span class="info-value"><%= quote.reference %></span></div>
+        <div class="info-row"><span class="info-label">Status</span><span class="badge badge-<%= quote.status %>"><%= quote.status.replace(/_/g,' ') %></span></div>
+        <div class="info-row"><span class="info-label">Priority</span><span class="badge badge-<%= quote.priority %>"><%= quote.priority %></span></div>
+        <div class="info-row"><span class="info-label">Submitted</span><span class="info-value"><%= new Date(quote.created_at).toLocaleString('en-ZA') %></span></div>
+        <div class="info-row"><span class="info-label">Updated</span><span class="info-value"><%= new Date(quote.updated_at).toLocaleString('en-ZA') %></span></div>
+        <div class="info-row"><span class="info-label">Assigned</span><span class="info-value"><%= quote.assigned_name || 'Unassigned' %></span></div>
+        <% if (quote.required_date) { %>
+        <div class="info-row"><span class="info-label">Required By</span><span class="info-value"><%= quote.required_date %></span></div>
+        <% } %>
+        <% if (quote.delivery_address) { %>
+        <div class="info-row"><span class="info-label">Delivery</span><span class="info-value"><%= quote.delivery_address %></span></div>
+        <% } %>
+        <% if (quote.total_estimated) { %>
+        <div class="info-row"><span class="info-label">Estimated Total</span><span class="info-value" style="color:#16a34a">R<%= quote.total_estimated.toFixed(2) %></span></div>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- Customer Info -->
+    <div class="panel">
+      <div class="panel-header">Customer</div>
+      <div class="panel-body">
+        <div class="info-row"><span class="info-label">Name</span><span class="info-value"><%= quote.customer_name %></span></div>
+        <div class="info-row"><span class="info-label">Email</span><span class="info-value"><a href="mailto:<%= quote.customer_email %>" style="color:#16a34a"><%= quote.customer_email %></a></span></div>
+        <% if (quote.customer_phone) { %>
+        <div class="info-row"><span class="info-label">Phone</span><span class="info-value"><a href="tel:<%= quote.customer_phone %>" style="color:#16a34a"><%= quote.customer_phone %></a></span></div>
+        <% } %>
+        <% if (quote.customer_company) { %>
+        <div class="info-row"><span class="info-label">Company</span><span class="info-value"><%= quote.customer_company %></span></div>
+        <% } %>
+        <div style="margin-top:.75rem"><a href="/admin/customers/<%= quote.customer_id %>" class="btn btn-sm">View Customer →</a></div>
+      </div>
+    </div>
+
+    <!-- Change Status -->
+    <div class="panel">
+      <div class="panel-header">Change Status</div>
+      <div class="panel-body">
+        <form method="POST" action="/admin/quotes/<%= quote.id %>/status">
+          <div class="form-group">
+            <select name="status">
+              <% ['new','reviewed','quoted','approved','in_production','quality_check','ready','shipped','completed','cancelled'].forEach(s => { %>
+              <option value="<%= s %>" <%= quote.status === s ? 'selected' : '' %>><%= s.replace(/_/g,' ') %></option>
+              <% }) %>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm" style="width:100%">Update Status</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Assign Staff -->
+    <div class="panel">
+      <div class="panel-header">Assign Staff</div>
+      <div class="panel-body">
+        <form method="POST" action="/admin/quotes/<%= quote.id %>/assign">
+          <div class="form-group">
+            <select name="assigned_to">
+              <option value="">Unassigned</option>
+              <% staff.forEach(s => { %>
+              <option value="<%= s.id %>" <%= quote.assigned_to == s.id ? 'selected' : '' %>><%= s.name %></option>
+              <% }) %>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm" style="width:100%">Update Assignment</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Set Priority -->
+    <div class="panel">
+      <div class="panel-header">Set Priority</div>
+      <div class="panel-body">
+        <form method="POST" action="/admin/quotes/<%= quote.id %>/priority">
+          <div class="form-group">
+            <select name="priority">
+              <% ['low','normal','high','urgent'].forEach(p => { %>
+              <option value="<%= p %>" <%= quote.priority === p ? 'selected' : '' %>><%= p %></option>
+              <% }) %>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm" style="width:100%">Update Priority</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Set Estimated Total -->
+    <div class="panel">
+      <div class="panel-header">Estimated Total</div>
+      <div class="panel-body">
+        <form method="POST" action="/admin/quotes/<%= quote.id %>/price">
+          <div class="form-group">
+            <input type="number" name="total_estimated" step="0.01" min="0" value="<%= quote.total_estimated || '' %>" placeholder="R 0.00"/>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm" style="width:100%">Update Total</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('layout-foot') %>

@@ -1,0 +1,78 @@
+<%- include('layout-head') %>
+
+<!-- Filters -->
+<div class="table-wrap">
+  <div class="table-header">
+    <h2>All Quotes (<%= total %>)</h2>
+    <form class="filters" method="GET" action="/admin/quotes">
+      <input type="text" name="search" placeholder="Search ref / name / email…" value="<%= filters.search || '' %>" style="min-width:200px"/>
+      <select name="status">
+        <option value="">All Statuses</option>
+        <% ['new','reviewed','quoted','approved','in_production','quality_check','ready','shipped','completed','cancelled'].forEach(s => { %>
+        <option value="<%= s %>" <%= filters.status === s ? 'selected' : '' %>><%= s.replace(/_/g,' ') %></option>
+        <% }) %>
+      </select>
+      <select name="priority">
+        <option value="">All Priorities</option>
+        <% ['low','normal','high','urgent'].forEach(p => { %>
+        <option value="<%= p %>" <%= filters.priority === p ? 'selected' : '' %>><%= p %></option>
+        <% }) %>
+      </select>
+      <select name="assigned">
+        <option value="">All Staff</option>
+        <% staff.forEach(s => { %>
+        <option value="<%= s.id %>" <%= filters.assigned == s.id ? 'selected' : '' %>><%= s.name %></option>
+        <% }) %>
+      </select>
+      <button type="submit" class="btn btn-sm btn-primary">Filter</button>
+      <a href="/admin/quotes" class="btn btn-sm">Clear</a>
+    </form>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Reference</th>
+        <th>Customer</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Assigned</th>
+        <th>Required Date</th>
+        <th>Submitted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (quotes.length === 0) { %>
+        <tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:2rem">No quotes match your filters.</td></tr>
+      <% } %>
+      <% quotes.forEach(q => { %>
+      <tr style="cursor:pointer" onclick="location.href='/admin/quotes/<%= q.id %>'">
+        <td><strong><%= q.reference %></strong></td>
+        <td><%= q.customer_name %></td>
+        <td style="font-size:.85rem"><%= q.customer_email %></td>
+        <td><span class="badge badge-<%= q.status %>"><%= q.status.replace(/_/g,' ') %></span></td>
+        <td><span class="badge badge-<%= q.priority %>"><%= q.priority %></span></td>
+        <td><%= q.assigned_name || '—' %></td>
+        <td><%= q.required_date || '—' %></td>
+        <td style="white-space:nowrap"><%= new Date(q.created_at).toLocaleDateString('en-ZA') %></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <% if (total > perPage) { %>
+  <div class="pagination">
+    <% const totalPages = Math.ceil(total / perPage); %>
+    <% for (let i = 1; i <= totalPages; i++) { %>
+      <% const params = new URLSearchParams({...filters, page: i}); %>
+      <% if (i === page) { %>
+        <span class="current"><%= i %></span>
+      <% } else { %>
+        <a href="/admin/quotes?<%= params %>"><%= i %></a>
+      <% } %>
+    <% } %>
+  </div>
+  <% } %>
+</div>
+
+<%- include('layout-foot') %>

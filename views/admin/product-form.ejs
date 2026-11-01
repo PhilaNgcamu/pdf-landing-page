@@ -1,0 +1,82 @@
+<%- include('layout-head') %>
+
+<div style="margin-bottom:1rem"><a href="/admin/products" class="btn btn-sm">← Back to Products</a></div>
+
+<div class="panel" style="max-width:720px">
+  <div class="panel-header"><%= product ? 'Edit Product' : 'New Product' %></div>
+  <div class="panel-body">
+    <form method="POST" action="<%= product ? '/admin/products/' + product.id : '/admin/products' %>">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Product Name *</label>
+          <input type="text" name="name" value="<%= product ? product.name : '' %>" required/>
+        </div>
+        <div class="form-group">
+          <label>Category *</label>
+          <select name="category_id" required>
+            <option value="">Select category</option>
+            <% categories.forEach(c => { %>
+            <option value="<%= c.id %>" <%= product && product.category_id == c.id ? 'selected' : '' %>><%= c.name %></option>
+            <% }) %>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>URL Slug</label>
+        <input type="text" name="slug" value="<%= product ? product.slug : '' %>" placeholder="auto-generated-from-name"/>
+      </div>
+
+      <div class="form-group">
+        <label>Short Description</label>
+        <input type="text" name="short_description" value="<%= product ? product.short_description : '' %>"/>
+      </div>
+
+      <div class="form-group">
+        <label>Full Description</label>
+        <textarea name="description" rows="4"><%= product ? product.description : '' %></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Min Quantity</label>
+          <input type="number" name="min_quantity" min="1" value="<%= product ? product.min_quantity : 1 %>"/>
+        </div>
+        <div class="form-group">
+          <label>Price From (R)</label>
+          <input type="number" name="price_from" step="0.01" min="0" value="<%= product ? product.price_from : '' %>"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Branding Methods (comma-separated)</label>
+        <input type="text" name="branding_methods" value="<%= product ? product.branding_methods.join(', ') : '' %>" placeholder="Screen Print, Embroidery, Laser Engraving"/>
+      </div>
+
+      <div class="form-group">
+        <label>Available Colours (comma-separated)</label>
+        <input type="text" name="colours" value="<%= product ? product.colours.join(', ') : '' %>" placeholder="Black, White, Navy, Red"/>
+      </div>
+
+      <div class="form-group">
+        <label>Available Sizes (comma-separated)</label>
+        <input type="text" name="sizes" value="<%= product ? product.sizes.join(', ') : '' %>" placeholder="S, M, L, XL"/>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label><input type="checkbox" name="featured" value="1" <%= product && product.featured ? 'checked' : '' %> style="width:auto;margin-right:.5rem"/>Featured Product</label>
+        </div>
+        <% if (product) { %>
+        <div class="form-group">
+          <label><input type="checkbox" name="active" value="1" <%= product.active ? 'checked' : '' %> style="width:auto;margin-right:.5rem"/>Active</label>
+        </div>
+        <% } %>
+      </div>
+
+      <button type="submit" class="btn btn-primary"><%= product ? 'Save Changes' : 'Create Product' %></button>
+    </form>
+  </div>
+</div>
+
+<%- include('layout-foot') %>

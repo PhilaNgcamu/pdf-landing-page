@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title><%= title %> — Tree Grows Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',system-ui,sans-serif; background:#f1f5f9; color:#1e293b; line-height:1.5; }
+    a { text-decoration:none; color:inherit; }
+
+    /* Sidebar */
+    .sidebar { position:fixed; top:0; left:0; width:240px; height:100vh; background:#0f2a1b; color:#fff; display:flex; flex-direction:column; z-index:100; }
+    .sidebar-brand { padding:1.25rem 1.5rem; font-size:1.15rem; font-weight:800; border-bottom:1px solid rgba(255,255,255,.1); display:flex; align-items:center; gap:.5rem; }
+    .sidebar-brand span { color:#4ade80; }
+    .sidebar-nav { flex:1; padding:1rem 0; overflow-y:auto; }
+    .sidebar-nav a { display:flex; align-items:center; gap:.75rem; padding:.65rem 1.5rem; font-size:.9rem; color:#94a3b8; transition:all .2s; }
+    .sidebar-nav a:hover, .sidebar-nav a.active { background:rgba(74,222,128,.1); color:#4ade80; }
+    .sidebar-nav a .icon { width:20px; text-align:center; }
+    .sidebar-footer { padding:1rem 1.5rem; border-top:1px solid rgba(255,255,255,.1); font-size:.85rem; }
+    .sidebar-footer .user-name { color:#fff; font-weight:600; }
+    .sidebar-footer .user-role { color:#64748b; font-size:.8rem; text-transform:capitalize; }
+    .sidebar-footer a { display:inline-block; margin-top:.5rem; color:#f87171; font-size:.85rem; }
+    .sidebar-footer a:hover { text-decoration:underline; }
+
+    /* Main */
+    .main { margin-left:240px; min-height:100vh; }
+    .topbar { background:#fff; padding:1rem 2rem; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+    .topbar h1 { font-size:1.25rem; font-weight:700; color:#111827; }
+    .content { padding:2rem; }
+
+    /* Cards & Stats */
+    .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin-bottom:2rem; }
+    .stat-card { background:#fff; border-radius:.75rem; padding:1.25rem; border:1px solid #e2e8f0; }
+    .stat-card .label { font-size:.8rem; color:#64748b; text-transform:uppercase; letter-spacing:.05em; font-weight:600; }
+    .stat-card .value { font-size:1.75rem; font-weight:800; color:#111827; margin-top:.25rem; }
+    .stat-card .value.green { color:#16a34a; }
+
+    /* Tables */
+    .table-wrap { background:#fff; border-radius:.75rem; border:1px solid #e2e8f0; overflow:hidden; margin-bottom:2rem; }
+    .table-header { padding:1rem 1.5rem; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.75rem; }
+    .table-header h2 { font-size:1.05rem; font-weight:700; }
+    table { width:100%; border-collapse:collapse; font-size:.9rem; }
+    th { background:#f8fafc; text-align:left; padding:.75rem 1rem; font-weight:600; color:#475569; white-space:nowrap; border-bottom:1px solid #e2e8f0; }
+    td { padding:.75rem 1rem; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+    tr:hover td { background:#f8fafc; }
+
+    /* Badges */
+    .badge { display:inline-block; padding:.2rem .6rem; border-radius:1rem; font-size:.75rem; font-weight:600; text-transform:capitalize; white-space:nowrap; }
+    .badge-new { background:#dbeafe; color:#1d4ed8; }
+    .badge-reviewed { background:#fef3c7; color:#92400e; }
+    .badge-quoted { background:#e0e7ff; color:#4338ca; }
+    .badge-approved { background:#d1fae5; color:#065f46; }
+    .badge-in_production { background:#fce7f3; color:#9d174d; }
+    .badge-quality_check { background:#ede9fe; color:#6d28d9; }
+    .badge-ready { background:#ccfbf1; color:#0f766e; }
+    .badge-shipped { background:#cffafe; color:#0e7490; }
+    .badge-completed { background:#d1fae5; color:#047857; }
+    .badge-cancelled { background:#fee2e2; color:#991b1b; }
+    .badge-low { background:#f1f5f9; color:#64748b; }
+    .badge-normal { background:#dbeafe; color:#1d4ed8; }
+    .badge-high { background:#fef3c7; color:#92400e; }
+    .badge-urgent { background:#fee2e2; color:#991b1b; }
+    .badge-admin { background:#ede9fe; color:#6d28d9; }
+    .badge-manager { background:#dbeafe; color:#1d4ed8; }
+    .badge-staff { background:#d1fae5; color:#065f46; }
+
+    /* Buttons */
+    .btn { display:inline-flex; align-items:center; gap:.4rem; padding:.5rem 1rem; border:1px solid #d1d5db; border-radius:.5rem; font-size:.85rem; font-weight:600; cursor:pointer; background:#fff; color:#374151; transition:all .2s; font-family:inherit; }
+    .btn:hover { border-color:#9ca3af; background:#f9fafb; }
+    .btn-primary { background:#16a34a; color:#fff; border-color:#16a34a; }
+    .btn-primary:hover { background:#15803d; }
+    .btn-danger { background:#dc2626; color:#fff; border-color:#dc2626; }
+    .btn-danger:hover { background:#b91c1c; }
+    .btn-sm { padding:.35rem .75rem; font-size:.8rem; }
+    .btn-link { background:none; border:none; color:#16a34a; padding:0; font-weight:600; }
+    .btn-link:hover { text-decoration:underline; }
+
+    /* Forms */
+    .form-group { margin-bottom:1rem; }
+    .form-group label { display:block; font-size:.85rem; font-weight:600; color:#374151; margin-bottom:.35rem; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:.6rem .75rem; border:1px solid #d1d5db; border-radius:.5rem; font-size:.9rem; font-family:inherit; background:#fff; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:#16a34a; box-shadow:0 0 0 3px rgba(22,163,74,.1); }
+    .form-group textarea { resize:vertical; min-height:80px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+
+    /* Detail panels */
+    .detail-grid { display:grid; grid-template-columns:2fr 1fr; gap:1.5rem; }
+    .panel { background:#fff; border-radius:.75rem; border:1px solid #e2e8f0; margin-bottom:1.5rem; }
+    .panel-header { padding:1rem 1.5rem; border-bottom:1px solid #e2e8f0; font-weight:700; font-size:.95rem; }
+    .panel-body { padding:1.25rem 1.5rem; }
+    .info-row { display:flex; justify-content:space-between; padding:.4rem 0; border-bottom:1px solid #f1f5f9; }
+    .info-row:last-child { border-bottom:none; }
+    .info-label { color:#64748b; font-size:.85rem; }
+    .info-value { font-weight:600; font-size:.85rem; }
+
+    /* Activity timeline */
+    .timeline { list-style:none; position:relative; padding-left:1.5rem; }
+    .timeline::before { content:''; position:absolute; left:.45rem; top:0; bottom:0; width:2px; background:#e2e8f0; }
+    .timeline li { position:relative; padding-bottom:1.25rem; }
+    .timeline li::before { content:''; position:absolute; left:-1.1rem; top:.35rem; width:10px; height:10px; background:#16a34a; border-radius:50%; border:2px solid #fff; }
+    .timeline .time { font-size:.75rem; color:#94a3b8; }
+    .timeline .actor { font-weight:600; color:#111827; font-size:.85rem; }
+    .timeline .desc { font-size:.85rem; color:#475569; }
+    .timeline li.type-note::before { background:#3b82f6; }
+    .timeline li.type-email_sent::before { background:#f59e0b; }
+    .timeline li.type-status_change::before { background:#8b5cf6; }
+
+    /* Filters */
+    .filters { display:flex; gap:.75rem; flex-wrap:wrap; align-items:center; }
+    .filters select, .filters input { padding:.45rem .75rem; border:1px solid #d1d5db; border-radius:.5rem; font-size:.85rem; font-family:inherit; }
+
+    /* Modal */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:200; align-items:center; justify-content:center; }
+    .modal-overlay.active { display:flex; }
+    .modal { background:#fff; border-radius:.75rem; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; }
+    .modal-header { padding:1rem 1.5rem; border-bottom:1px solid #e2e8f0; font-weight:700; display:flex; justify-content:space-between; align-items:center; }
+    .modal-body { padding:1.5rem; }
+    .modal-close { background:none; border:none; font-size:1.25rem; cursor:pointer; color:#64748b; }
+
+    /* Pagination */
+    .pagination { display:flex; gap:.5rem; justify-content:center; padding:1rem; }
+    .pagination a, .pagination span { padding:.4rem .8rem; border:1px solid #d1d5db; border-radius:.375rem; font-size:.85rem; }
+    .pagination a:hover { background:#f1f5f9; }
+    .pagination .current { background:#16a34a; color:#fff; border-color:#16a34a; }
+
+    /* Responsive */
+    @media (max-width:768px) {
+      .sidebar { width:100%; height:auto; position:relative; }
+      .main { margin-left:0; }
+      .detail-grid { grid-template-columns:1fr; }
+      .form-row { grid-template-columns:1fr; }
+      .stat-grid { grid-template-columns:repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-brand">🌳 Tree <span>Grows</span></div>
+    <nav class="sidebar-nav">
+      <a href="/admin" class="<%= title === 'Dashboard' ? 'active' : '' %>"><span class="icon">📊</span> Dashboard</a>
+      <a href="/admin/quotes" class="<%= title === 'Quote Requests' ? 'active' : '' %>"><span class="icon">📋</span> Quotes</a>
+      <a href="/admin/customers" class="<%= title === 'Customers' ? 'active' : '' %>"><span class="icon">👥</span> Customers</a>
+      <a href="/admin/products" class="<%= title === 'Products' ? 'active' : '' %>"><span class="icon">📦</span> Products</a>
+      <% if (user.role === 'admin') { %>
+      <a href="/admin/staff" class="<%= title === 'Staff Management' ? 'active' : '' %>"><span class="icon">🔑</span> Staff</a>
+      <% } %>
+      <a href="/" target="_blank"><span class="icon">🌐</span> View Website</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-name"><%= user.name %></div>
+      <div class="user-role"><%= user.role %></div>
+      <a href="/admin/logout">Sign Out</a>
+    </div>
+  </aside>
+  <div class="main">
+    <div class="topbar"><h1><%= title %></h1></div>
+    <div class="content">

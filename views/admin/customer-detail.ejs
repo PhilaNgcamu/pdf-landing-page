@@ -1,0 +1,53 @@
+<%- include('layout-head') %>
+
+<div style="margin-bottom:1rem"><a href="/admin/customers" class="btn btn-sm">← Back to Customers</a></div>
+
+<div class="detail-grid">
+  <div>
+    <!-- Quote History -->
+    <div class="table-wrap">
+      <div class="table-header"><h2>Quote History (<%= quotes.length %>)</h2></div>
+      <table>
+        <thead><tr><th>Reference</th><th>Status</th><th>Priority</th><th>Assigned</th><th>Date</th></tr></thead>
+        <tbody>
+          <% if (quotes.length === 0) { %>
+            <tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:2rem">No quotes from this customer.</td></tr>
+          <% } %>
+          <% quotes.forEach(q => { %>
+          <tr style="cursor:pointer" onclick="location.href='/admin/quotes/<%= q.id %>'">
+            <td><strong><%= q.reference %></strong></td>
+            <td><span class="badge badge-<%= q.status %>"><%= q.status.replace(/_/g,' ') %></span></td>
+            <td><span class="badge badge-<%= q.priority %>"><%= q.priority %></span></td>
+            <td><%= q.assigned_name || '—' %></td>
+            <td style="white-space:nowrap"><%= new Date(q.created_at).toLocaleDateString('en-ZA') %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <!-- Customer Info -->
+    <div class="panel">
+      <div class="panel-header">Customer Details</div>
+      <div class="panel-body">
+        <div class="info-row"><span class="info-label">Name</span><span class="info-value"><%= customer.name %></span></div>
+        <div class="info-row"><span class="info-label">Email</span><span class="info-value"><a href="mailto:<%= customer.email %>" style="color:#16a34a"><%= customer.email %></a></span></div>
+        <% if (customer.phone) { %>
+        <div class="info-row"><span class="info-label">Phone</span><span class="info-value"><a href="tel:<%= customer.phone %>" style="color:#16a34a"><%= customer.phone %></a></span></div>
+        <% } %>
+        <% if (customer.company) { %>
+        <div class="info-row"><span class="info-label">Company</span><span class="info-value"><%= customer.company %></span></div>
+        <% } %>
+        <% if (customer.address) { %>
+        <div class="info-row"><span class="info-label">Address</span><span class="info-value"><%= customer.address %></span></div>
+        <% } %>
+        <div class="info-row"><span class="info-label">Since</span><span class="info-value"><%= new Date(customer.created_at).toLocaleDateString('en-ZA') %></span></div>
+        <div class="info-row"><span class="info-label">Total Quotes</span><span class="info-value"><%= quotes.length %></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('layout-foot') %>

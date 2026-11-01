@@ -1,0 +1,285 @@
+/* ============================================
+   Tree Grows — Inner Pages Styles
+   ============================================ */
+
+/* Page Hero */
+.page-hero {
+  background: linear-gradient(135deg, #0f2a1b, #14532d);
+  color: #fff;
+  padding: 7rem 0 3rem;
+  text-align: center;
+}
+.page-hero h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: .5rem;
+}
+.page-hero p {
+  color: #bbf7d0;
+  font-size: 1.1rem;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  padding: 1rem 0;
+  font-size: .9rem;
+  color: #64748b;
+}
+.breadcrumb a { color: #16a34a; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb span { margin: 0 .35rem; }
+
+/* ─── Catalogue ─── */
+.catalogue-section { padding: 3rem 0 6rem; }
+.catalogue-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.search-box input {
+  width: 100%;
+  max-width: 400px;
+  padding: .75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: .5rem;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color .2s;
+}
+.search-box input:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+.category-filters {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.cat-btn {
+  padding: .45rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 2rem;
+  background: #fff;
+  font-family: inherit;
+  font-size: .85rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all .2s;
+}
+.cat-btn:hover { border-color: #16a34a; color: #16a34a; }
+.cat-btn.active { background: #16a34a; color: #fff; border-color: #16a34a; }
+
+/* Products Grid */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+.product-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: transform .3s, box-shadow .3s;
+  display: flex;
+  flex-direction: column;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0,0,0,.08);
+}
+.product-card .card-cat {
+  font-size: .75rem;
+  font-weight: 600;
+  color: #16a34a;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: .5rem;
+}
+.product-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: .35rem;
+}
+.product-card .card-desc {
+  font-size: .9rem;
+  color: #6b7280;
+  flex: 1;
+  margin-bottom: 1rem;
+}
+.product-card .card-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #16a34a;
+  margin-bottom: 1rem;
+}
+.product-card .card-actions {
+  display: flex;
+  gap: .5rem;
+}
+.product-card .card-actions .btn { flex: 1; font-size: .85rem; }
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+/* ─── Product Detail ─── */
+.product-detail-section { padding: 1rem 0 6rem; }
+.product-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.product-image {
+  background: #f0fdf4;
+  border-radius: 1rem;
+  height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+}
+.product-info h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: .5rem;
+}
+.product-info .product-cat {
+  font-size: .85rem;
+  color: #16a34a;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.product-info .product-desc {
+  color: #4b5563;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+.product-info .price-tag {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #16a34a;
+  margin-bottom: 1.5rem;
+}
+
+/* Options form */
+.option-group {
+  margin-bottom: 1rem;
+}
+.option-group label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: .35rem;
+}
+.option-group select,
+.option-group input {
+  width: 100%;
+  max-width: 300px;
+  padding: .6rem .75rem;
+  border: 1px solid #d1d5db;
+  border-radius: .5rem;
+  font-family: inherit;
+  font-size: .9rem;
+}
+.option-group select:focus,
+.option-group input:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+}
+.add-to-basket-btn {
+  margin-top: 1.5rem;
+}
+
+/* ─── Basket ─── */
+.basket-section { padding: 3rem 0 6rem; }
+.basket-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.basket-item {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: .75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.basket-item-info h4 { font-size: 1rem; font-weight: 700; color: #111827; }
+.basket-item-info .item-details { font-size: .85rem; color: #6b7280; margin-top: .25rem; }
+.basket-item-actions { flex-shrink: 0; }
+.basket-item-actions button {
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: .375rem;
+  padding: .3rem .6rem;
+  cursor: pointer;
+  font-size: .8rem;
+  color: #dc2626;
+  transition: all .2s;
+}
+.basket-item-actions button:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.quote-submit-card {
+  background: #f0fdf4;
+  border: 1px solid #dcfce7;
+  border-radius: 1rem;
+  padding: 2rem;
+  position: sticky;
+  top: 5rem;
+}
+.quote-submit-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: .25rem;
+}
+.quote-submit-card .form-group { margin-bottom: .85rem; }
+.quote-submit-card .form-group label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: .3rem;
+}
+.quote-submit-card input,
+.quote-submit-card textarea {
+  width: 100%;
+  padding: .6rem .75rem;
+  border: 1px solid #d1d5db;
+  border-radius: .5rem;
+  font-size: .9rem;
+  font-family: inherit;
+}
+.quote-submit-card input:focus,
+.quote-submit-card textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .product-detail { grid-template-columns: 1fr; }
+  .product-image { height: 240px; font-size: 3.5rem; }
+  .basket-grid { grid-template-columns: 1fr; }
+  .quote-submit-card { position: static; }
+}
